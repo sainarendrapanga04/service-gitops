@@ -6,9 +6,15 @@ metadata:
 spec:
   description: AppProject for service2 (dev, stg, prod)
 
+  # ----------------------------------
+  # Allowed Git repositories
+  # ----------------------------------
   sourceRepos:
     - https://github.com/sainarendrapanga04/service-gitops.git
 
+  # ----------------------------------
+  # Allowed deployment destinations
+  # ----------------------------------
   destinations:
     - namespace: argocd
       server: https://kubernetes.default.svc
@@ -19,6 +25,84 @@ spec:
     - namespace: prod
       server: https://kubernetes.default.svc
 
+  # ----------------------------------
+  # Allowed cluster-scoped resources
+  # ----------------------------------
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
+
+  # ----------------------------------
+  # Project-level RBAC roles
+  # ----------------------------------
+  roles:
+    - name: dev-role
+      description: Dev access for service2 (dev only)
+      policies:
+        - p, proj:service2-project:dev-role, applications, get, service2-project/devapp2, allow
+        - p, proj:service2-project:dev-role, applications, sync, service2-project/devapp2, allow
+      groups:
+        - dev2
+
+    - name: sre-role
+      description: SRE access for service2 (all envs)
+      policies:
+        - p, proj:service2-project:sre-role, applications, *, service2-project/*, allow
+      groups:
+        - sre2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#apiVersion: argoproj.io/v1alpha1
+#kind: AppProject
+#metadata:
+#  name: service2-project
+#  namespace: argocd
+#spec:
+#  description: AppProject for service2 (dev, stg, prod)
+#
+#  sourceRepos:
+#    - https://github.com/sainarendrapanga04/service-gitops.git
+#
+#  destinations:
+#    - namespace: argocd
+#      server: https://kubernetes.default.svc
+#    - namespace: dev
+#      server: https://kubernetes.default.svc
+#    - namespace: stg
+#      server: https://kubernetes.default.svc
+#    - namespace: prod
+#      server: https://kubernetes.default.svc
+#
+#  clusterResourceWhitelist:
+#    - group: '*'
+#      kind: '*'

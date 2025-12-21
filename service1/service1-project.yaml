@@ -6,11 +6,15 @@ metadata:
 spec:
   description: AppProject for service1 (dev, stg, prod)
 
-  # ✅ Which Git repos this project can use
+  # ----------------------------------
+  # Allowed Git repositories
+  # ----------------------------------
   sourceRepos:
     - https://github.com/sainarendrapanga04/service-gitops.git
 
-  # ✅ Where apps are allowed to deploy
+  # ----------------------------------
+  # Allowed deployment destinations
+  # ----------------------------------
   destinations:
     - namespace: dev
       server: https://kubernetes.default.svc
@@ -21,7 +25,82 @@ spec:
     - namespace: argocd
       server: https://kubernetes.default.svc
 
-  # ✅ What cluster-scoped resources are allowed (safe defaults)
+  # ----------------------------------
+  # Allowed cluster-scoped resources
+  # (safe default – can be restricted later)
+  # ----------------------------------
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
+
+  # ----------------------------------
+  # Project-level RBAC roles
+  # ----------------------------------
+  roles:
+    - name: dev-role
+      description: Dev access for service1 (dev only)
+      policies:
+        # Dev can view dev app
+        - p, proj:service1-project:dev-role, applications, get, service1-project/devapp1, allow
+        - p, proj:service1-project:dev-role, applications, sync, service1-project/devapp1, allow
+      groups:
+        - dev1
+
+    - name: sre-role
+      description: SRE access for service1 (all envs)
+      policies:
+        # SRE can do everything on all service1 apps
+        - p, proj:service1-project:sre-role, applications, *, service1-project/*, allow
+      groups:
+        - sre1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#apiVersion: argoproj.io/v1alpha1
+#kind: AppProject
+#metadata:
+#  name: service1-project
+#  namespace: argocd
+#spec:
+#  description: AppProject for service1 (dev, stg, prod)
+#
+#  # ✅ Which Git repos this project can use
+#  sourceRepos:
+#    - https://github.com/sainarendrapanga04/service-gitops.git
+#
+#  # ✅ Where apps are allowed to deploy
+#  destinations:
+#    - namespace: dev
+#      server: https://kubernetes.default.svc
+#    - namespace: stg
+#      server: https://kubernetes.default.svc
+#    - namespace: prod
+#      server: https://kubernetes.default.svc
+#    - namespace: argocd
+#      server: https://kubernetes.default.svc
+#
+#  # ✅ What cluster-scoped resources are allowed (safe defaults)
+#  clusterResourceWhitelist:
+#    - group: '*'
+#      kind: '*'
