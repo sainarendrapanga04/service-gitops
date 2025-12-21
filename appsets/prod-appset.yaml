@@ -13,7 +13,7 @@ spec:
     metadata:
       name: '{{app}}'
     spec:
-      project: default
+      project: service1-project
       source:
         repoURL: https://github.com/sainarendrapanga04/service-gitops.git
         targetRevision: HEAD

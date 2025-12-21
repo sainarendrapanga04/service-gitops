@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: service1-project
+  namespace: argocd
+spec:
+  description: AppProject for service1 (dev, stg, prod)
+
+  # ✅ Which Git repos this project can use
+  sourceRepos:
+    - https://github.com/sainarendrapanga04/service-gitops.git
+
+  # ✅ Where apps are allowed to deploy
+  destinations:
+    - namespace: dev
+      server: https://kubernetes.default.svc
+    - namespace: stg
+      server: https://kubernetes.default.svc
+    - namespace: prod
+      server: https://kubernetes.default.svc
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+
+  # ✅ What cluster-scoped resources are allowed (safe defaults)
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
