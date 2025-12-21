@@ -54,6 +54,13 @@ spec:
           - p, proj:service1-project:dev-role, applications, watch, service1-project/prod*, allow
           - p, proj:service1-project:dev-role, applications, logs, service1-project/prod*, allow
 
+          # --------------------------------
+          # APP OF APPS → NON-DISRUPTIVE ONLY
+          # --------------------------------
+          - p, proj:service1-project:dev-role, applications, get,   service1-project/service1-root, allow
+          - p, proj:service1-project:dev-role, applications, list,  service1-project/service1-root, allow
+          - p, proj:service1-project:dev-role, applications, watch, service1-project/service1-root, allow
+
       groups:
         - dev1
 #    - name: dev-role
