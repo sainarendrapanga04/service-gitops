@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: service2-prod-appset
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - app: prodapp2
+            path: apps/prod/app2
+  template:
+    metadata:
+      name: '{{app}}'
+    spec:
+      project: service2-project
+      source:
+        repoURL: https://github.com/sainarendrapanga04/service-gitops.git
+        targetRevision: HEAD
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: prod
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: service2-project
+  namespace: argocd
+spec:
+  description: AppProject for service2 (dev, stg, prod)
+
+  sourceRepos:
+    - https://github.com/sainarendrapanga04/service-gitops.git
+
+  destinations:
+    - namespace: argocd
+      server: https://kubernetes.default.svc
+    - namespace: dev
+      server: https://kubernetes.default.svc
+    - namespace: stg
+      server: https://kubernetes.default.svc
+    - namespace: prod
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
