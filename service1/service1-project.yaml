@@ -38,13 +38,32 @@ spec:
   # ----------------------------------
   roles:
     - name: dev-role
-      description: Dev access for service1 (dev only)
+      description: |
+          Dev users:
+          - DEV + STG: full access
+          - PROD: non-disruptive (read-only)
+
       policies:
-        # Dev can view dev app
-        - p, proj:service1-project:dev-role, applications, get, service1-project/devapp1, allow
-        - p, proj:service1-project:dev-role, applications, sync, service1-project/devapp1, allow
+          # ---- DEV + STG (FULL ACCESS) ----
+          - p, proj:service1-project:dev-role, applications, *, service1-project/dev*, allow
+          - p, proj:service1-project:dev-role, applications, *, service1-project/stg*, allow
+
+          # ---- PROD (NON-DISRUPTIVE ONLY) ----
+          - p, proj:service1-project:dev-role, applications, get, service1-project/prod*, allow
+          - p, proj:service1-project:dev-role, applications, list, service1-project/prod*, allow
+          - p, proj:service1-project:dev-role, applications, watch, service1-project/prod*, allow
+          - p, proj:service1-project:dev-role, applications, logs, service1-project/prod*, allow
+
       groups:
         - dev1
+#    - name: dev-role
+#      description: Dev access for service1 (dev only)
+#      policies:
+#        # Dev can view dev app
+#        - p, proj:service1-project:dev-role, applications, get, service1-project/devapp1, allow
+#        - p, proj:service1-project:dev-role, applications, sync, service1-project/devapp1, allow
+#      groups:
+#        - dev1
 
     - name: sre-role
       description: SRE access for service1 (all envs)
