@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/sainarendrapanga04/service-gitops.git
     targetRevision: HEAD
-    path: appsets
+    path: service1/appsets
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
