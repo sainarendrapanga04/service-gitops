@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prodapp1
+  labels:
+    app: prodapp1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: prodapp1
+  template:
+    metadata:
+      labels:
+        app: prodapp1
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80
